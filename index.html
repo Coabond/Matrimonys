@@ -4,654 +4,465 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vishwanil Chakraborty - Matrimonial Profile</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <style>
         :root {
             --bg-color-dark: #1a1a2e;
             --bg-color-light: #0f3460;
-            --card-bg: #222642;
-            
+
+            /* Glass background colors */
+            --glass-bg: rgba(34, 38, 66, 0.35);   /* Desktop */
+            --glass-bg-tab: rgba(34, 38, 66, 0.30);
+            --glass-bg-mobile: rgba(34, 38, 66, 0.60);
+            --glass-bg-small: rgba(34, 38, 66, 0.50);
+
             --primary-accent: #e94560;
             --secondary-accent: #03DAC6;
-            
+
             --text-color: #e0e0e0;
             --heading-color: #ffffff;
             --subtle-text: #b0b0b0;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --shadow-light: rgba(0, 0, 0, 0.2);
-            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --border-glass: rgba(255, 255, 255, 0.25);
+            --shadow-dark: rgba(0,0,0,0.5);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, var(--bg-color-dark) 0%, var(--bg-color-light) 100%);
-            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-color-dark), var(--bg-color-light));
             margin: 0;
             padding: 40px 20px;
             overflow-x: hidden;
-            line-height: 1.6;
-            user-select: none;
+            color: var(--text-color);
         }
 
-        /* Canvas for Floating Animation */
+        /* BACKGROUND ANIMATION CANVAS */
         #ganesh-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top:0; left:0;
+            width:100%; height:100%;
             z-index: -1;
-            transition: transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 2s ease;
         }
 
         .animate-active {
-            transform: scale(1.4); 
+            transform: scale(1.4);
         }
-        
+
+        /* MAIN CARD */
         .container {
             max-width: 900px;
             margin: auto;
-            background: rgba(34, 38, 66, 0.85); /* semi-transparent to show animation */
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 10px 30px var(--shadow-dark);
-            animation: fadeIn 0.6s ease-out;
+
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+
+            box-shadow: 0 10px 40px var(--shadow-dark);
+            animation: fadeIn 0.8s ease-out;
         }
-        
-        .profile-header { 
-            text-align: center; 
-            margin-bottom: 40px; 
-            padding-bottom: 30px; 
-            border-bottom: 1px solid var(--primary-accent); 
-            animation: fadeIn 0.5s ease-out; 
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--primary-accent);
         }
-        .profile-pic-container { 
-            width: 180px; height: 180px; border-radius: 50%; 
-            margin: 0 auto 20px auto; 
-            overflow: hidden; 
+
+        .profile-pic-container {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: auto;
             border: 5px solid var(--secondary-accent);
             box-shadow: 0 0 25px var(--secondary-accent);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            cursor: pointer;
-        }
-        .profile-pic-container:hover { 
-            transform: scale(1.08); 
-            box-shadow: 0 0 35px var(--secondary-accent);
-        }
-        .profile-pic { 
-            width: 100%; height: 100%; object-fit: cover; 
-            filter: grayscale(10%) brightness(1.1);
-            transition: filter 0.3s ease;
-        }
-        .profile-pic-container:hover .profile-pic {
-            filter: grayscale(0%) brightness(1);
+            transition: transform 0.3s;
         }
 
-        .profile-name { 
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem; 
-            font-weight: 700; 
-            color: var(--heading-color); 
-            margin: 0; 
-            text-shadow: 0 2px 5px var(--shadow-dark);
-            word-break: break-word;
-        }
-        .profile-tagline { 
-            font-size: 1.15rem; 
-            color: var(--subtle-text); 
-            margin-top: 8px; 
-            font-style: italic; 
-            letter-spacing: 0.5px;
-            padding: 0 10px;
-        }
-        .download-button { 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px; 
-            background: linear-gradient(90deg, var(--primary-accent) 0%, #ff6b81 100%);
-            color: var(--heading-color); 
-            padding: 14px 30px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            font-weight: 600; 
-            cursor: pointer; 
-            border: none; 
-            font-family: 'Montserrat', sans-serif; 
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease; 
-            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
-            letter-spacing: 0.8px;
-            font-size: 1rem;
-            min-width: 220px;
-        }
-        .download-button:hover { 
-            transform: translateY(-5px) scale(1.02); 
-            box-shadow: 0 12px 25px rgba(233, 69, 96, 0.5); 
-        }
-        
-        .section { 
-            background: rgba(15, 52, 96, 0.4);
-            margin-bottom: 30px; 
-            padding: 30px;
-            border-radius: 15px; 
-            border: 1px solid var(--border-color); 
-            transition: box-shadow 0.4s ease, transform 0.3s ease; 
-            text-align: left; 
-            animation: fadeIn 0.6s ease-out forwards; 
-            opacity: 0; 
-            box-shadow: 0 5px 15px var(--shadow-light);
-        }
-        .section:nth-child(2) { animation-delay: 0.1s; }
-        .section:nth-child(3) { animation-delay: 0.2s; }
-        .section:nth-child(4) { animation-delay: 0.3s; }
-        .section:nth-child(5) { animation-delay: 0.4s; }
-        .section:nth-child(6) { animation-delay: 0.5s; }
-
-        .section:hover { 
-            box-shadow: 0 10px 25px var(--shadow-dark), 0 0 15px rgba(3, 218, 198, 0.2);
-            transform: translateY(-8px);
-        }
-        .section-title { 
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem; 
-            font-weight: 700; 
-            color: var(--heading-color); 
-            margin-bottom: 20px; 
-            padding-bottom: 10px; 
-            border-bottom: 3px solid var(--secondary-accent);
-            display: inline-block; 
-            position: relative;
+        .profile-pic-container:hover {
+            transform: scale(1.08);
         }
 
-        .info-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; 
-        }
-        .info-item { 
-            display: flex; 
-            align-items: center; 
-            background: var(--bg-color-light);
-            padding: 18px;
-            border-radius: 12px; 
-            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; 
-            overflow-wrap: break-word; 
-            word-break: break-word; 
-            box-shadow: 0 2px 8px var(--shadow-light);
-        }
-        .info-item:hover { 
-            transform: translateY(-5px); 
-            background-color: #1a4a8a;
-            box-shadow: 0 5px 15px var(--shadow-dark);
-        }
-        .info-item i { 
-            font-size: 1.3rem;
-            color: var(--secondary-accent); 
-            margin-right: 18px; 
-            width: 30px; 
-            text-align: center; 
-            flex-shrink: 0; 
-        }
-        .info-item span { 
-            font-size: 1.05rem; 
-            color: var(--text-color); 
-        }
-        .info-item strong {
-            color: var(--heading-color);
+        .profile-pic {
+            width:100%; height:100%;
+            object-fit:cover;
         }
 
-        .about-text { 
-            font-size: 1.05rem; 
-            line-height: 1.8; 
-            text-align: justify; 
+        .profile-name {
+            font-family: "Playfair Display", serif;
+            font-size: 2.8rem;
+            margin: 15px 0 0 0;
+            color: white;
+            text-shadow: 0 2px 10px black;
+        }
+
+        .profile-tagline {
+            font-size: 1.1rem;
             color: var(--subtle-text);
+            margin-top: 5px;
+            font-style: italic;
         }
-        
-        /* Photo Gallery Styles */
-        .photo-gallery { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px; 
-        }
-        .gallery-img { 
-            width: 100%; 
-            height: 200px;
-            object-fit: cover; 
-            border-radius: 12px; 
-            border: 2px solid var(--border-color);
-            box-shadow: 0 5px 15px var(--shadow-light);
-            cursor: pointer; 
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; 
-        }
-        .gallery-img:hover { 
-            transform: scale(1.05); 
-            border-color: var(--primary-accent);
-            box-shadow: 0 8px 20px var(--shadow-dark);
-        }
-        
-        /* Lightbox (Full Screen) Styles */
-        .lightbox {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            padding-top: 50px; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.95); 
-            animation: fadeIn 0.3s;
-        }
-        .lightbox-content {
-            margin: auto; 
-            display: block; 
-            width: 85%; 
-            max-width: 900px; 
-            max-height: 90vh; 
-            object-fit: contain; 
-            border-radius: 15px; 
-            box-shadow: 0 0 40px rgba(3, 218, 198, 0.7);
-        }
-        .close {
-            position: absolute; 
-            top: 20px; 
-            right: 20px; 
-            color: #f1f1f1; 
-            font-size: 40px; 
-            font-weight: bold; 
-            transition: 0.3s; 
+
+        .download-button {
+            margin-top: 25px;
+            padding: 14px 28px;
+            background: linear-gradient(90deg, var(--primary-accent), #ff6b81);
+            border-radius: 50px;
+            border: none;
+            color: white;
             cursor: pointer;
-            padding: 10px;
-        }
-        .close:hover, .close:focus { 
-            color: var(--secondary-accent); 
-            text-decoration: none; 
-            cursor: pointer; 
-            transform: scale(1.1); 
+            font-size: 1rem;
+            font-weight: 600;
         }
 
-        /* PRINT / PDF STYLES */
-        @media print {
-            body { background: #ffffff !important; color: #000000 !important; margin: 0 !important; }
-            .container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; background: #ffffff !important; }
-            #downloadBtn, #ganesh-canvas, .lightbox { display: none !important; }
-            
-            .profile-name { color: #000000 !important; text-shadow: none !important; font-size: 24pt !important; }
-            .profile-tagline { color: #333333 !important; font-style: italic; }
-            .section-title { color: #000000 !important; border-bottom: 2px solid #000 !important; font-size: 18pt !important; }
-            .section-title::after { display: none !important; }
-            
-            .about-text, .info-item span { color: #000000 !important; font-size: 12pt !important; }
-            
-            .section { background: #ffffff !important; border: 1px solid #cccccc !important; box-shadow: none !important; margin-bottom: 20px !important; padding: 15px !important; page-break-inside: avoid; }
-            .info-item { background: #f9f9f9 !important; border: 1px solid #eeeeee !important; box-shadow: none !important; color: #000000 !important; }
-            .info-item i { color: #333333 !important; }
-            
-            .profile-pic-container { border-color: #333 !important; box-shadow: none !important; }
-            .gallery-img { box-shadow: none !important; border: 1px solid #ddd !important; height: 150px !important; }
-            .photo-gallery { page-break-inside: avoid; }
+        .section {
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 15px;
+
+            background: rgba(15, 52, 96, 0.25); /* more transparency for animation */
+
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(14px);
+
+            animation: fadeIn 1s ease-out;
         }
 
-        /* ========= TABLET ========= */
-        @media (max-width: 1024px) {
-            body {
-                padding: 30px 15px;
-            }
+        .section-title {
+            font-family: "Playfair Display", serif;
+            font-size: 2rem;
+            color: white;
+            border-bottom: 3px solid var(--secondary-accent);
+            display: inline-block;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: rgba(15,52,96,0.40);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(12px);
+        }
+
+        .info-item i {
+            font-size: 1.3rem;
+            color: var(--secondary-accent);
+            margin-right: 15px;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+            gap: 18px;
+        }
+
+        .gallery-img {
+            height:200px;
+            width:100%;
+            object-fit:cover;
+            border-radius:12px;
+            border:1px solid var(--border-glass);
+            backdrop-filter: blur(10px);
+            cursor:pointer;
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+            display:none;
+            position:fixed;
+            z-index:999;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.95);
+        }
+
+        .lightbox-content {
+            max-width:90%;
+            max-height:90%;
+            display:block;
+            margin:80px auto;
+            border-radius:15px;
+        }
+
+        .close {
+            position:absolute;
+            top:20px; right:25px;
+            font-size:45px;
+            color:white;
+            cursor:pointer;
+        }
+
+        /* TABLET */
+        @media(max-width:1024px) {
             .container {
-                padding: 30px;
-                margin: 0 auto 30px auto;
-            }
-            .profile-name {
-                font-size: 2.4rem;
-            }
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .photo-gallery {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                background: var(--glass-bg-tab);
             }
         }
 
-        /* ========= MOBILE ========= */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 10px;
-            }
-            .container { 
-                padding: 20px 15px; 
-                border-radius: 16px;
-                background: rgba(34, 38, 66, 0.65); /* more see-through on mobile */
-            }
-            .profile-header {
-                margin-bottom: 25px;
-                padding-bottom: 20px;
-            }
-            .profile-pic-container {
-                width: 140px;
-                height: 140px;
-                border-width: 4px;
-            }
-            .profile-name { 
-                font-size: 2rem; 
-            }
-            .profile-tagline {
-                font-size: 0.98rem;
-            }
-            .download-button {
-                width: 100%;
-                max-width: 100%;
-                font-size: 0.95rem;
-                padding: 12px 18px;
-            }
-            .section { 
-                padding: 20px; 
-                margin-bottom: 20px;
-                background: rgba(15, 52, 96, 0.35); /* slightly more transparent */
-            }
-            .section-title { 
-                font-size: 1.6rem; 
-            }
-            .about-text {
-                font-size: 0.98rem;
-            }
-            .info-grid { 
-                grid-template-columns: 1fr; 
-                gap: 15px;
-            }
-            .info-item {
-                padding: 14px;
-            }
-            .info-item span {
-                font-size: 0.98rem;
-            }
-            .photo-gallery { 
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-                gap: 12px;
-            }
-            .gallery-img {
-                height: 150px;
-            }
-            .lightbox-content {
-                width: 92%;
-            }
-            .close {
-                top: 15px;
-                right: 12px;
-                font-size: 32px;
-            }
-        }
+        /* MOBILE */
+        @media(max-width:768px) {
+            body { padding:20px; }
 
-        /* ========= SMALL MOBILE ========= */
-        @media (max-width: 480px) {
-            body {
-                padding: 15px 8px;
-            }
             .container {
-                padding: 18px 12px;
+                padding:20px;
+                background: var(--glass-bg-mobile);
             }
-            .profile-pic-container {
-                width: 120px;
-                height: 120px;
+
+            .section {
+                background: rgba(15,52,96,0.30);
             }
-            .profile-name {
-                font-size: 1.8rem;
+
+            .profile-name { font-size:2.2rem; }
+        }
+
+        /* SMALL MOBILE */
+        @media(max-width:480px) {
+            .container {
+                background: var(--glass-bg-small);
             }
-            .section-title {
-                font-size: 1.4rem;
-            }
-            .photo-gallery {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
-            }
-            .gallery-img {
-                height: 130px;
-            }
-            .about-text,
-            .info-item span {
-                font-size: 0.95rem;
-            }
-            .download-button {
-                font-size: 0.9rem;
+            .section {
+                background: rgba(15,52,96,0.25);
             }
         }
+
     </style>
 </head>
 <body>
-    
+
     <canvas id="ganesh-canvas"></canvas>
 
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="lightbox">
         <span class="close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
+        <img id="lightbox-img" class="lightbox-content">
     </div>
 
-    <div class="container" id="profile-to-print">
+    <!-- MAIN CARD -->
+    <div class="container">
+
         <header class="profile-header">
             <div class="profile-pic-container">
-                <img src="profile.png" alt="Vishwanil Chakraborty" class="profile-pic" onerror="this.src='https://via.placeholder.com/180?text=Profile+Img';">
+                <img class="profile-pic" src="profile.png">
             </div>
+
             <h1 class="profile-name">Vishwanil Chakraborty</h1>
             <p class="profile-tagline">A balanced professional seeking a genuine connection for a shared future.</p>
-            <button id="downloadBtn" class="download-button" onclick="window.print()">
+
+            <button class="download-button" onclick="window.print()">
                 <i class="fas fa-download"></i> Download / Save as PDF
             </button>
         </header>
 
         <main>
+
             <section class="section">
                 <h2 class="section-title">About Me</h2>
                 <p class="about-text">
-                    I am a Senior Consultant at Capco (Wipro) in the BFSI sector, passionate about transforming lending with innovative IT solutions. Currently working from home with my office based in Gurgaon. I currently live with my parents in Sahibabad, Ghaziabad (Delhi NCR). My role involves collaborating with our MNC client, HSBC, across the US, UK, and APAC regions. I consider myself progressive yet deeply rooted in cultural values.
+                    I am a Senior Consultant at Capco (Wipro) in the BFSI sector, passionate about transforming lending with innovative IT solutions. Currently working from home with my office based in Gurgaon. I live with my parents in Sahibabad (Delhi NCR).
                 </p>
             </section>
 
             <section class="section">
                 <h2 class="section-title">Partner Preference</h2>
-                <p class="about-text" style="margin-bottom: 15px;">
-                    I am seeking a loving and caring partner who values mutual respect and open communication.
-                </p>
+                <p class="about-text">Looking for someone loving, respectful, and family-oriented.</p>
+
                 <div class="info-grid">
-                    <div class="info-item"><i class="fas fa-heart"></i><span><strong>Nature:</strong> Loving, Caring & Supportive</span></div>
-                    <div class="info-item"><i class="fas fa-balance-scale"></i><span><strong>Values:</strong> Respectful & Family Oriented</span></div>
-                    <div class="info-item"><i class="fas fa-brain"></i><span><strong>Mindset:</strong> Progressive yet Cultured</span></div>
-                    <div class="info-item"><i class="fas fa-hands-helping"></i><span><strong>Goal:</strong> A meaningful partnership</span></div>
+                    <div class="info-item"><i class="fas fa-heart"></i><span>Loving, Caring & Supportive</span></div>
+                    <div class="info-item"><i class="fas fa-users"></i><span>Family Oriented</span></div>
+                    <div class="info-item"><i class="fas fa-brain"></i><span>Progressive yet cultured</span></div>
                 </div>
             </section>
-            
+
             <section class="section">
                 <h2 class="section-title">Personal & Professional Details</h2>
+
                 <div class="info-grid">
-                    <div class="info-item"><i class="fas fa-cake-candles"></i><span><strong>DOB:</strong> 6th March 1990</span></div>
-                    <div class="info-item"><i class="far fa-clock"></i><span><strong>Time:</strong> 9:25 AM</span></div>
-                    <div class="info-item"><i class="fas fa-map-marker-alt"></i><span><strong>Birth Place:</strong> Agartala</span></div>
-                    <div class="info-item"><i class="fas fa-ruler-vertical"></i><span><strong>Height:</strong> 5' 11"</span></div>
-                    <div class="info-item"><i class="fas fa-briefcase"></i><span><strong>Profession:</strong> Senior Consultant</span></div>
+                    <div class="info-item"><i class="fas fa-cake-candles"></i><span>DOB: 6th March 1990</span></div>
+                    <div class="info-item"><i class="far fa-clock"></i><span>Time: 9:25 AM</span></div>
+                    <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Birth Place: Agartala</span></div>
+                    <div class="info-item"><i class="fas fa-ruler-vertical"></i><span>Height: 5' 11"</span></div>
+                    <div class="info-item"><i class="fas fa-briefcase"></i><span>Profession: Senior Consultant</span></div>
                 </div>
             </section>
 
             <section class="section">
                 <h2 class="section-title">Family & Background</h2>
-                 <div class="info-grid">
-                    <div class="info-item"><i class="fas fa-user-tie"></i><span><strong>Father:</strong> Mr. B. Chakraborty</span></div>
-                    <div class="info-item"><i class="fas fa-om"></i><span><strong>Religion:</strong> Hindu Brahmin</span></div>
-                    <div class="info-item"><i class="fas fa-users"></i><span><strong>Gotra:</strong> Parashar</span></div>
-                    <div class="info-item"><i class="fas fa-users-slash"></i><span><strong>Siblings:</strong> None</span></div>
-                    <div class="info-item"><i class="fas fa-home"></i><span><strong>Current Residence:</strong> Sahibabad, Ghaziabad</span></div>
+
+                <div class="info-grid">
+                    <div class="info-item"><i class="fas fa-user-tie"></i><span>Father: Mr. B. Chakraborty</span></div>
+                    <div class="info-item"><i class="fas fa-om"></i><span>Religion: Hindu Brahmin</span></div>
+                    <div class="info-item"><i class="fas fa-users"></i><span>Gotra: Parashar</span></div>
                 </div>
             </section>
-            
+
             <section class="section">
                 <h2 class="section-title">Lifestyle & Interests</h2>
+
                 <div class="info-grid">
-                    <div class="info-item"><i class="fas fa-utensils"></i><span><strong>Diet:</strong> Non-Vegetarian & Vegetarian</span></div>
-                    <div class="info-item"><i class="fas fa-smoking-ban"></i><span><strong>Smoking:</strong> Strictly No</span></div>
-                    <div class="info-item"><i class="fas fa-wine-glass-alt"></i><span><strong>Alcohol:</strong> Strictly No</span></div>
-                    <div class="info-item"><i class="fas fa-book-open-reader"></i><span><strong>Hobbies:</strong> Reading, Tech Blogs</span></div>
-                    <div class="info-item"><i class="fas fa-plane-departure"></i><span><strong>Interests:</strong> Traveling, Fitness</span></div>
-                    <div class="info-item"><i class="fas fa-language"></i><span><strong>Languages:</strong> Hindi, Bengali, English, Kannada</span></div>
+                    <div class="info-item"><i class="fas fa-utensils"></i><span>Diet: Veg & Non-Veg</span></div>
+                    <div class="info-item"><i class="fas fa-smoking-ban"></i><span>Smoking: No</span></div>
+                    <div class="info-item"><i class="fas fa-wine-glass-alt"></i><span>Alcohol: No</span></div>
+                    <div class="info-item"><i class="fas fa-plane"></i><span>Interests: Travel, Tech, Fitness</span></div>
                 </div>
             </section>
 
             <section class="section">
                 <h2 class="section-title">Photo Gallery</h2>
+
                 <div class="photo-gallery">
-                    <img src="gallery1.jpg" alt="Photo 1" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=Img+1';">
-                    <img src="gallery2.jpg" alt="Photo 2" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=Img+2';">
-                    <img src="gallery3.jpg" alt="Photo 3" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=Img+3';">
-                    <img src="gallery4.jpg" alt="Photo 4" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=Img+4';">
-                    <img src="gallery5.jpg" alt="Photo 5" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=Img+5';">
+                    <img class="gallery-img" src="gallery1.jpg">
+                    <img class="gallery-img" src="gallery2.jpg">
+                    <img class="gallery-img" src="gallery3.jpg">
+                    <img class="gallery-img" src="gallery4.jpg">
                 </div>
             </section>
-            
-             <section class="section">
+
+            <section class="section">
                 <h2 class="section-title">Contact Information</h2>
-                 <div class="info-grid">
+
+                <div class="info-grid">
                     <div class="info-item"><i class="fas fa-envelope"></i><span>vishwanilchakraborty@gmail.com</span></div>
-                    <div class="info-item"><i class="fas fa-mobile-alt"></i><span>My Mobile: +91 7011562059</span></div>
-                    <div class="info-item"><i class="fas fa-phone"></i><span>Father's Mobile: +91 8595031071</span></div>
+                    <div class="info-item"><i class="fas fa-phone"></i><span>Mobile: +91 7011562059</span></div>
+                    <div class="info-item"><i class="fas fa-phone"></i><span>Father: +91 8595031071</span></div>
                 </div>
             </section>
+
         </main>
     </div>
 
     <script>
-        // --- ANIMATION SCRIPT (SPARKLING 3D GANESH & OM) ---
-        const canvas = document.getElementById('ganesh-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray;
-        let ganeshImage = new Image();
-        
-        ganeshImage.src = 'ganesh.png'; 
+        /* BACKGROUND ANIMATION */
+        const canvas = document.getElementById("ganesh-canvas");
+        const ctx = canvas.getContext("2d");
+
+        let particles = [];
+        let ganesh = new Image();
+        ganesh.src = "ganesh.png";
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let speedMultiplier = 1;
-        
-        window.addEventListener('mousedown', () => {
-            canvas.classList.add('animate-active');
-            speedMultiplier = 5;
+        let speed = 1;
+
+        window.addEventListener("mousedown", () => {
+            canvas.classList.add("animate-active");
+            speed = 5;
             setTimeout(() => {
-                canvas.classList.remove('animate-active');
-                speedMultiplier = 1; 
+                canvas.classList.remove("animate-active");
+                speed = 1;
             }, 2000);
         });
 
-        window.addEventListener('touchstart', () => {
-            canvas.classList.add('animate-active');
-            speedMultiplier = 5;
+        window.addEventListener("touchstart", () => {
+            canvas.classList.add("animate-active");
+            speed = 5;
             setTimeout(() => {
-                canvas.classList.remove('animate-active');
-                speedMultiplier = 1;
+                canvas.classList.remove("animate-active");
+                speed = 1;
             }, 2000);
         });
 
         class Particle {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.directionX = (Math.random() * 0.6) - 0.3; 
-                this.directionY = (Math.random() * 0.6) - 0.3; 
-                this.type = Math.random() > 0.5 ? 'image' : 'text'; 
-                this.size = this.type === 'image' ? Math.random() * 20 + 25 : Math.random() * 8 + 12;
-                this.text = "ॐ";
-                this.opacity = Math.random() * 0.5 + 0.2;
-                this.opacitySpeed = Math.random() * 0.01 + 0.005;
-                this.opacityDirection = 1; 
+                this.x = Math.random()*canvas.width;
+                this.y = Math.random()*canvas.height;
+                this.dx = (Math.random()*0.6)-0.3;
+                this.dy = (Math.random()*0.6)-0.3;
+                this.type = Math.random()>0.5 ? "ganesh" : "om";
+                this.size = this.type==="ganesh" ? Math.random()*20+25 : Math.random()*10+12;
+                this.opacity = Math.random()*0.5 + 0.2;
+                this.opacitySpeed = Math.random()*0.01 + 0.005;
+                this.opacityDir = 1;
             }
             draw() {
                 ctx.save();
-                ctx.globalAlpha = this.opacity; 
-                
-                if (this.type === 'image' && ganeshImage.complete) {
-                    ctx.drawImage(ganeshImage, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+                ctx.globalAlpha = this.opacity;
+
+                if(this.type==="ganesh" && ganesh.complete) {
+                    ctx.drawImage(ganesh, this.x-this.size/2, this.y-this.size/2, this.size, this.size);
                 } else {
-                    ctx.font = "900 " + this.size + "px Arial";
-                    ctx.fillStyle = '#e94560'; 
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(this.text, this.x, this.y);
+                    ctx.font = `${this.size}px Arial`;
+                    ctx.fillStyle = "#e94560";
+                    ctx.textAlign="center";
+                    ctx.fillText("ॐ", this.x, this.y);
                 }
-                
                 ctx.restore();
             }
             update() {
-                this.x += this.directionX * speedMultiplier;
-                this.y += this.directionY * speedMultiplier;
-                this.opacity += this.opacitySpeed * this.opacityDirection * speedMultiplier;
-                
-                if (this.opacity > 0.8) {
-                    this.opacity = 0.8;
-                    this.opacityDirection = -1;
-                } else if (this.opacity < 0.2) {
-                    this.opacity = 0.2;
-                    this.opacityDirection = 1;
-                }
+                this.x += this.dx*speed;
+                this.y += this.dy*speed;
 
-                if (this.x > canvas.width + this.size) this.x = -this.size;
-                if (this.x < -this.size) this.x = canvas.width + this.size;
-                if (this.y > canvas.height + this.size) this.y = -this.size;
-                if (this.y < -this.size) this.y = canvas.height + this.size;
+                this.opacity += this.opacitySpeed*this.opacityDir;
+                if(this.opacity>0.8){this.opacityDir=-1;}
+                if(this.opacity<0.2){this.opacityDir=1;}
+
+                if(this.x>canvas.width+this.size) this.x=-this.size;
+                if(this.x<-this.size) this.x=canvas.width+this.size;
+                if(this.y>canvas.height+this.size) this.y=-this.size;
+                if(this.y<-this.size) this.y=canvas.height+this.size;
 
                 this.draw();
             }
         }
 
-        function initParticles() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 35000; 
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
+        function initParticles(){
+            particles=[];
+            let amount = (canvas.width*canvas.height)/35000;
+            for(let i=0;i<amount;i++){
+                particles.push(new Particle());
             }
         }
 
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
+        function animate(){
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach(p=>p.update());
         }
 
-        ganeshImage.onload = function() { initParticles(); animateParticles(); };
-        ganeshImage.onerror = function() { initParticles(); animateParticles(); };
-
-        window.addEventListener('resize', () => {
+        ganesh.onload = () => { initParticles(); animate(); };
+        window.onresize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             initParticles();
+        };
+
+        /* LIGHTBOX */
+        const lightbox = document.getElementById("lightbox");
+        const lightImg = document.getElementById("lightbox-img");
+        const closeBtn = document.querySelector(".close");
+
+        document.querySelectorAll(".gallery-img, .profile-pic").forEach(img=>{
+            img.onclick = () => {
+                lightbox.style.display="block";
+                lightImg.src = img.src;
+            }
         });
 
-        // --- LIGHTBOX FUNCTIONALITY ---
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.getElementsByClassName('close')[0];
-        const galleryImages = document.querySelectorAll('.gallery-img, .profile-pic');
-
-        galleryImages.forEach(img => {
-            img.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                lightbox.style.display = "block";
-                lightboxImg.src = this.src;
-            });
-        });
-
-        closeBtn.addEventListener('click', () => { lightbox.style.display = "none"; });
-        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.style.display = "none"; });
+        closeBtn.onclick = () => lightbox.style.display="none";
+        lightbox.onclick = (e) => { if(e.target===lightbox) lightbox.style.display="none"; }
     </script>
 </body>
 </html>
