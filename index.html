@@ -61,7 +61,7 @@
         .container {
             max-width: 900px;
             margin: auto;
-            background: var(--card-bg);
+            background: rgba(34, 38, 66, 0.85); /* semi-transparent to show animation */
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: 20px;
@@ -287,7 +287,7 @@
         /* PRINT / PDF STYLES */
         @media print {
             body { background: #ffffff !important; color: #000000 !important; margin: 0 !important; }
-            .container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+            .container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; background: #ffffff !important; }
             #downloadBtn, #ganesh-canvas, .lightbox { display: none !important; }
             
             .profile-name { color: #000000 !important; text-shadow: none !important; font-size: 24pt !important; }
@@ -334,6 +334,7 @@
             .container { 
                 padding: 20px 15px; 
                 border-radius: 16px;
+                background: rgba(34, 38, 66, 0.65); /* more see-through on mobile */
             }
             .profile-header {
                 margin-bottom: 25px;
@@ -359,6 +360,7 @@
             .section { 
                 padding: 20px; 
                 margin-bottom: 20px;
+                background: rgba(15, 52, 96, 0.35); /* slightly more transparent */
             }
             .section-title { 
                 font-size: 1.6rem; 
